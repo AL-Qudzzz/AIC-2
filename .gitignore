@@ -50,11 +50,7 @@ out/
 # ==========================================
 # VS Code & Other Editors
 # ==========================================
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
 *.code-workspace
 .fleet/
 
@@ -67,7 +63,8 @@ out/
 .cursor/
 .claude/
 .codex/
-.impeccable/config.local.json
+.impeccable/
+
 
 # ==========================================
 # Secrets, Keys, Keystores & Credentials
