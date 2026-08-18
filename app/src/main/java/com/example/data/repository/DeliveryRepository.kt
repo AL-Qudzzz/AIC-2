@@ -30,111 +30,8 @@ class DeliveryRepository(
     val lastVrpResult: StateFlow<VrpModelInference.VrpOptimizationResult?> = _lastVrpResult.asStateFlow()
 
     suspend fun initializeSampleDataIfEmpty() {
-        val currentPackages = packagesFlow.first()
-        if (currentPackages.isEmpty()) {
-            val rawSamplePackages = listOf(
-                DeliveryPackage(
-                    id = "PKG-101",
-                    trackingNumber = "RW-8839201",
-                    recipientName = "Bpk. Hendra Kurniawan",
-                    phone = "081298765432",
-                    address = "Jl. Sawah Raya No. 12, RT 02/03",
-                    subDistrict = "Sawah, Ciputat, Tangsel",
-                    sequence = 1,
-                    status = "TERKIRIM",
-                    priority = "REGULER",
-                    timeSlot = "08:30 - 10:30",
-                    failureRiskLevel = "LOW",
-                    lat = -6.2985,
-                    lng = 106.7321,
-                    deliveryProofNotes = "Diterima Ybs langsung",
-                    completedTimestamp = System.currentTimeMillis() - 3600000
-                ),
-                DeliveryPackage(
-                    id = "PKG-102",
-                    trackingNumber = "RW-8839202",
-                    recipientName = "Ibu Siska Amelia",
-                    phone = "081388112233",
-                    address = "Jl. Cendrawasih I No. 45",
-                    subDistrict = "Sawah, Ciputat, Tangsel",
-                    sequence = 2,
-                    status = "DALAM_PERJALANAN",
-                    priority = "EKSPRES",
-                    timeSlot = "10:00 - 12:00",
-                    failureRiskLevel = "MEDIUM",
-                    failureRiskReason = "Pelanggan sering istirahat jam 12:00 - 13:00",
-                    recommendedAction = "Konfirmasi via WhatsApp sebelum menuju lokasi",
-                    lat = -6.3012,
-                    lng = 106.7350
-                ),
-                DeliveryPackage(
-                    id = "PKG-103",
-                    trackingNumber = "RW-8839203",
-                    recipientName = "Bpk. Agus Setiawan",
-                    phone = "085711223344",
-                    address = "Gang Ki Hajar Dewantara No. 8",
-                    subDistrict = "Sawah, Ciputat, Tangsel",
-                    sequence = 3,
-                    status = "BELUM_DIMULAI",
-                    priority = "EKSPRES",
-                    timeSlot = "10:30 - 12:30",
-                    failureRiskLevel = "LOW",
-                    lat = -6.3035,
-                    lng = 106.7382
-                ),
-                DeliveryPackage(
-                    id = "PKG-104",
-                    trackingNumber = "RW-8839204",
-                    recipientName = "Ibu Rina Wati (Paket #04)",
-                    phone = "081233445566",
-                    address = "Jl. Nuansa Elok No. 18",
-                    subDistrict = "Sawah, Ciputat, Tangsel",
-                    sequence = 4,
-                    status = "BELUM_DIMULAI",
-                    priority = "REGULER",
-                    timeSlot = "13:00 - 15:00",
-                    failureRiskLevel = "HIGH",
-                    failureRiskReason = "Alamat dalam gang sempit & penerima sering kosong di atas jam 14:00",
-                    recommendedAction = "Minta draf WA konfirmasi patokan atau titip satpam perumahan",
-                    lat = -6.3060,
-                    lng = 106.7410
-                ),
-                DeliveryPackage(
-                    id = "PKG-105",
-                    trackingNumber = "RW-8839205",
-                    recipientName = "Bpk. Doni Pratama",
-                    phone = "081900998877",
-                    address = "Jl. Merak Raya No. 3",
-                    subDistrict = "Sawah, Ciputat, Tangsel",
-                    sequence = 5,
-                    status = "BELUM_DIMULAI",
-                    priority = "REGULER",
-                    timeSlot = "14:00 - 16:00",
-                    failureRiskLevel = "LOW",
-                    lat = -6.3088,
-                    lng = 106.7435
-                ),
-                DeliveryPackage(
-                    id = "PKG-106",
-                    trackingNumber = "RW-8839206",
-                    recipientName = "Ibu Maya Rosita",
-                    phone = "082155667788",
-                    address = "Jl. Ki Hajar Dewantara No. 88",
-                    subDistrict = "Sawah, Ciputat, Tangsel",
-                    sequence = 6,
-                    status = "BELUM_DIMULAI",
-                    priority = "REGULER",
-                    timeSlot = "15:00 - 17:00",
-                    failureRiskLevel = "LOW",
-                    lat = -6.3110,
-                    lng = 106.7460
-                )
-            )
-
-            // Evaluate failure risk using ML inference engine (FR-7)
-            val evaluatedPackages = failureInference.evaluatePackageList(rawSamplePackages)
-            db.packageDao().insertPackages(evaluatedPackages)
-        }
+        // Purge any old sample packages so the app starts completely clean (0 packages)
+        db.packageDao().deleteAllPackages()
 
         val currentChats = chatMessagesFlow.first()
         if (currentChats.isEmpty()) {
@@ -144,7 +41,7 @@ class DeliveryRepository(
                     sender = "COPILOT",
                     text = "Halo Bro Kurir! 🚚 Saya RouteWise AI Copilot.\n" +
                             "Model ML Aktif: $modelSummary.\n" +
-                            "Ada ${currentPackages.size.ifZero(6)} paket hari ini. Tanyakan apa saja seperti rekomendasi rute (VRP Engine), prediksi kegagalan (FR-7), atau cek bensin!"
+                            "Aplikasi siap digunakan. Daftar paket pengiriman saat ini masih kosong. Silakan tambahkan paket baru untuk memulai perencanaan rute dan navigasi 3D!"
                 )
             )
         }

@@ -10,6 +10,7 @@ import com.example.data.model.MapCameraState
 import com.example.data.model.NavigationGuidanceState
 import com.example.data.model.PackageDestination
 import com.example.data.model.RoutePolylineState
+import com.example.data.model.VehicleType
 import com.example.data.model.toDeliveryPackage
 import com.example.data.model.toPackageDestination
 import com.example.data.repository.DeliveryRepository
@@ -51,9 +52,15 @@ class SharedRouteViewModel(application: Application) : AndroidViewModel(applicat
     private val _navigationState = MutableStateFlow(NavigationGuidanceState())
     val navigationState: StateFlow<NavigationGuidanceState> = _navigationState.asStateFlow()
 
-    // 5. User Real-Time Location
+    // 5. User Real-Time Location & Heading
     private val _userLocation = MutableStateFlow<GeoPoint?>(null)
     val userLocation: StateFlow<GeoPoint?> = _userLocation.asStateFlow()
+
+    private val _userBearing = MutableStateFlow(0f)
+    val userBearing: StateFlow<Float> = _userBearing.asStateFlow()
+
+    private val _vehicleType = MutableStateFlow(VehicleType.MOTORCYCLE)
+    val vehicleType: StateFlow<VehicleType> = _vehicleType.asStateFlow()
 
     // 6. Loading & Search states
     private val _isOptimizing = MutableStateFlow(false)
@@ -77,13 +84,23 @@ class SharedRouteViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     /**
-     * Updates real-time user location from GPS.
+     * Updates real-time user location and optional bearing from GPS.
      */
-    fun setUserLocation(point: GeoPoint) {
+    fun setUserLocation(point: GeoPoint, bearing: Float = 0f) {
         _userLocation.value = point
+        if (bearing != 0f) {
+            _userBearing.value = bearing
+        }
         if (_navigationState.value.isNavigating) {
             updateNavigationProgress(point)
         }
+    }
+
+    /**
+     * Sets the active vehicle type for navigation rendering.
+     */
+    fun setVehicleType(type: VehicleType) {
+        _vehicleType.value = type
     }
 
     /**
@@ -97,11 +114,13 @@ class SharedRouteViewModel(application: Application) : AndroidViewModel(applicat
      * Synchronizes package list from database into SharedRouteViewModel's destinations.
      */
     fun syncFromDatabasePackages(packages: List<DeliveryPackage>) {
-        val current = _destinations.value
         val mapped = packages.map { it.toPackageDestination() }
-        if (current.isEmpty() && mapped.isNotEmpty()) {
-            _destinations.value = mapped
+        _destinations.value = mapped
+        if (mapped.isNotEmpty()) {
             recalculateRouteWithOnnx(mapped)
+        } else {
+            _routePolyline.value = null
+            _navigationState.value = NavigationGuidanceState(isNavigating = false)
         }
     }
 

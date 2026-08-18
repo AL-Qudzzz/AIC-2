@@ -17,11 +17,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -50,12 +47,12 @@ fun DailySummaryScreen(
     val failedCount = packages.count { it.status == "GAGAL_KIRIM" }
     val pendingCount = totalCount - deliveredCount - failedCount
 
-    val totalKm = 18.5
+    val totalKm = if (totalCount == 0) 0.0 else (deliveredCount * 2.8 + pendingCount * 1.5)
     val litersUsed = totalKm / vehicleProfile.fuelEfficiencyKmPerL
     val fuelCostRp = litersUsed * vehicleProfile.fuelPricePerL
 
     val successRatePct = if (totalCount > 0) ((deliveredCount.toDouble() / totalCount) * 100).toInt() else 0
-    val currencyFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+    val currencyFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("id-ID"))
 
     Column(
         modifier = modifier
@@ -66,15 +63,15 @@ fun DailySummaryScreen(
     ) {
         Spacer(modifier = Modifier.height(4.dp))
 
-        // Title
+        // Screen Title
         Text(
-            text = "Ringkasan Performa Shift",
+            text = "Ringkasan Performa",
             fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
+            fontSize = 18.sp,
             color = MaterialTheme.colorScheme.onSurface
         )
         Text(
-            text = "Kec. Sawah, Tangsel",
+            text = "Kec. Sawah, Tangsel • Shift Aktif",
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -102,7 +99,7 @@ fun DailySummaryScreen(
                 ) {
                     Column {
                         Text(
-                            text = "Tingkat Keberhasilan",
+                            text = "Keberhasilan Pengiriman",
                             fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -116,7 +113,7 @@ fun DailySummaryScreen(
 
                     Box(
                         modifier = Modifier
-                            .size(54.dp)
+                            .size(50.dp)
                             .clip(CircleShape)
                             .background(Color(0xFF10B981).copy(alpha = 0.12f)),
                         contentAlignment = Alignment.Center
@@ -124,7 +121,7 @@ fun DailySummaryScreen(
                         Text(
                             text = "$deliveredCount/$totalCount",
                             fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
+                            fontSize = 15.sp,
                             color = Color(0xFF059669)
                         )
                     }
@@ -132,12 +129,13 @@ fun DailySummaryScreen(
 
                 Spacer(modifier = Modifier.height(14.dp))
 
+                // Breakdown Pills
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Surface(
-                        color = Color(0xFFD1FAE5),
+                        color = Color(0xFFECFDF5),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.weight(1f)
                     ) {
@@ -145,7 +143,7 @@ fun DailySummaryScreen(
                             modifier = Modifier.padding(10.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Terkirim", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFF065F46))
+                            Text(text = "Terkirim", fontSize = 11.sp, color = Color(0xFF065F46))
                             Text(text = "$deliveredCount", fontWeight = FontWeight.Bold, fontSize = 15.sp, color = Color(0xFF065F46))
                         }
                     }
@@ -153,7 +151,7 @@ fun DailySummaryScreen(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Surface(
-                        color = Color(0xFFFEE2E2),
+                        color = Color(0xFFFEF2F2),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.weight(1f)
                     ) {
@@ -161,7 +159,7 @@ fun DailySummaryScreen(
                             modifier = Modifier.padding(10.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Gagal", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFF991B1B))
+                            Text(text = "Gagal", fontSize = 11.sp, color = Color(0xFF991B1B))
                             Text(text = "$failedCount", fontWeight = FontWeight.Bold, fontSize = 15.sp, color = Color(0xFF991B1B))
                         }
                     }
@@ -177,7 +175,7 @@ fun DailySummaryScreen(
                             modifier = Modifier.padding(10.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Pending", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(text = "Pending", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Text(text = "$pendingCount", fontWeight = FontWeight.Bold, fontSize = 15.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
@@ -187,7 +185,7 @@ fun DailySummaryScreen(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // Operational Stats
+        // Operational Stats Card
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -202,9 +200,9 @@ fun DailySummaryScreen(
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "Operasional",
+                    text = "Statistik Operasional",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
+                    fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurface
                 )
 

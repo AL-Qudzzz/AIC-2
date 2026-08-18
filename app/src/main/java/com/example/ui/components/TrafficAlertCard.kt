@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -44,10 +45,10 @@ fun TrafficAlertCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(24.dp))
+            .clip(RoundedCornerShape(18.dp))
             .background(Color(0xFFFFFBEB))
-            .border(1.dp, Color(0xFFFCD34D), RoundedCornerShape(24.dp))
-            .padding(16.dp)
+            .border(1.dp, Color(0xFFFDE68A), RoundedCornerShape(18.dp))
+            .padding(14.dp)
             .testTag("traffic_alert_card_${alert.id}")
     ) {
         Column {
@@ -57,17 +58,25 @@ fun TrafficAlertCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.Traffic,
-                        contentDescription = "Peringatan Macet",
-                        tint = Color(0xFFD97706),
-                        modifier = Modifier.size(22.dp)
-                    )
+                    Box(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFFFEF3C7)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Traffic,
+                            contentDescription = "Peringatan Macet",
+                            tint = Color(0xFFD97706),
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Prediksi Kemacetan GNN 🚨",
+                        text = "Prediksi Kemacetan AI",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp,
+                        fontSize = 13.sp,
                         color = Color(0xFF92400E)
                     )
                 }
@@ -75,19 +84,19 @@ fun TrafficAlertCard(
                 IconButton(
                     onClick = onDismiss,
                     modifier = Modifier
-                        .size(24.dp)
+                        .size(28.dp)
                         .testTag("dismiss_alert_${alert.id}")
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "Tutup Alert",
-                        tint = Color.Gray,
+                        tint = Color(0xFFB45309),
                         modifier = Modifier.size(16.dp)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = "${alert.roadName} — ${alert.congestionLevel}",
@@ -97,8 +106,8 @@ fun TrafficAlertCard(
             )
 
             Text(
-                text = "Potensi delay ${alert.timeEstimateDelayMins} menit. ${alert.alternativeRoute}",
-                fontSize = 12.sp,
+                text = "Delay ~${alert.timeEstimateDelayMins} mnt. ${alert.alternativeRoute}",
+                fontSize = 11.sp,
                 color = Color(0xFFB45309),
                 modifier = Modifier.padding(top = 2.dp)
             )
@@ -109,19 +118,21 @@ fun TrafficAlertCard(
                 onClick = onApplyAlternateRoute,
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD97706)),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 12.dp, vertical = 6.dp),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(38.dp)
                     .testTag("apply_alt_route_btn_${alert.id}")
             ) {
                 Icon(
                     imageVector = Icons.Default.Navigation,
                     contentDescription = "Rute Alternatif",
                     tint = Color.White,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(15.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                    text = "Gunakan Rute Alternatif (Hemat ${alert.timeSavedMins} Menit)",
+                    text = "Gunakan Alternatif (Hemat ${alert.timeSavedMins} Menit)",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White

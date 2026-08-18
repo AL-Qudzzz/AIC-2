@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0F172A">
+
+    <!-- Full-Screen 3D Osmdroid MapView -->
+    <org.osmdroid.views.MapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- TOP LAYER: Back Button, Akhiri (End) Button & Maneuver Banner -->
+    <LinearLayout
+        android:id="@+id/layout_top_layer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Top Action Bar (Back & Akhiri) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Round Back Button -->
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_round_back_button"
+                android:contentDescription="Kembali"
+                android:elevation="6dp"
+                android:padding="12dp"
+                android:src="@drawable/ic_arrow_back" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <!-- Green 'Akhiri' Navigation Button -->
+            <Button
+                android:id="@+id/btn_end_navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:background="@drawable/bg_green_end_button"
+                android:elevation="6dp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="Akhiri"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Turn-by-Turn Maneuver Header Card -->
+        <LinearLayout
+            android:id="@+id/card_maneuver_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_nav_top_banner"
+            android:elevation="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <ImageView
+                android:id="@+id/iv_maneuver_icon_top"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="Maneuver"
+                android:src="@drawable/ic_nav_turn_right" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_maneuver_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Dalam 250 m"
+                    android:textColor="#10B981"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_next_street"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-medium"
+                    android:maxLines="1"
+                    android:text="Belok kanan ke Jl. Sawah Raya"
+                    android:textColor="#F1F5F9"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- RIGHT LAYER: Floating Action Buttons (Recenter, Mute, Report) -->
+    <LinearLayout
+        android:id="@+id/layout_right_fabs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/card_bottom_navigation"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!-- Volume / Mute Button -->
+        <ImageButton
+            android:id="@+id/btn_volume"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_round_fab"
+            android:contentDescription="Suara Navigasi"
+            android:elevation="6dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_volume_up" />
+
+        <!-- Report Incident / Alert Button -->
+        <ImageButton
+            android:id="@+id/btn_report"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_round_fab"
+            android:contentDescription="Lapor Kendala"
+            android:elevation="6dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_report_problem" />
+
+        <!-- Recenter / My Location Button -->
+        <ImageButton
+            android:id="@+id/btn_recenter"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_round_fab"
+            android:contentDescription="Pusatkan Lokasi"
+            android:elevation="6dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_my_location" />
+    </LinearLayout>
+
+    <!-- SPEEDOMETER BADGE (Left Floating Indicator) -->
+    <LinearLayout
+        android:id="@+id/layout_speed_badge"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_above="@id/card_bottom_navigation"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_speed_badge"
+        android:elevation="6dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_current_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="38"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="km/h"
+            android:textColor="#94A3B8"
+            android:textSize="9sp" />
+    </LinearLayout>
+
+    <!-- BOTTOM LAYER: Navigation Instruction, ETA, Remaining Distance & Stop Details -->
+    <LinearLayout
+        android:id="@+id/card_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_nav_bottom_sheet"
+        android:elevation="12dp"
+        android:orientation="vertical"
+        android:padding="18dp">
+
+        <!-- Top Row: ETA, Remaining Distance, Remaining Time -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_eta_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:text="14:45"
+                    android:textColor="#059669"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_remaining_time_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="15 mnt • 4.8 km"
+                    android:textColor="#64748B"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Maneuver Status Pill -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_nav_top_banner"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="6dp">
+
+                <ImageView
+                    android:id="@+id/iv_bottom_turn_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="Turn"
+                    android:src="@drawable/ic_nav_straight" />
+
+                <TextView
+                    android:id="@+id/tv_bottom_turn_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Rute Lancar"
+                    android:textColor="#10B981"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="#E2E8F0" />
+
+        <!-- Target Destination Stop Detail -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_customer_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Tujuan: Budi Santoso (PKG-001)"
+                    android:textColor="#0F172A"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_destination_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Jl. Ki Hajar Dewantara No. 12, Sawah, Ciputat"
+                    android:textColor="#64748B"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

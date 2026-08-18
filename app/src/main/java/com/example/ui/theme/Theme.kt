@@ -13,19 +13,20 @@ import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = PrimaryBlueLight,
-    onPrimary = Slate900,
+    onPrimary = Slate950,
     primaryContainer = PrimaryBlue,
     onPrimaryContainer = Color.White,
-    secondary = AccentTeal,
-    onSecondary = Color.White,
-    tertiary = PrimaryBlueContainer,
-    background = Slate900,
+    secondary = CyanGlow,
+    onSecondary = Slate950,
+    tertiary = AccentTeal,
+    background = DarkCanvas,
     onBackground = Slate50,
-    surface = Slate800,
+    surface = DarkCardBg,
     onSurface = Slate50,
-    surfaceVariant = Slate700,
-    onSurfaceVariant = Slate100,
-    outline = Slate700
+    surfaceVariant = Slate800,
+    onSurfaceVariant = Slate300,
+    outline = DarkBorder,
+    outlineVariant = Slate700
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -35,20 +36,21 @@ private val LightColorScheme = lightColorScheme(
     onPrimaryContainer = OnPrimaryBlueContainer,
     secondary = SecondarySlate,
     onSecondary = Color.White,
-    tertiary = AccentTeal,
+    tertiary = CyanAccent,
     background = BentoCanvas,
     onBackground = Slate900,
     surface = BentoCardBg,
     onSurface = Slate900,
     surfaceVariant = Slate100,
     onSurfaceVariant = Slate500,
-    outline = BentoBorder
+    outline = BentoBorder,
+    outlineVariant = Slate200
 )
 
 @Composable
 fun MyApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // Set false to maintain consistent RouteWise brand colors
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.LocalGasStation
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.TwoWheeler
 import androidx.compose.material3.Card
@@ -57,7 +56,7 @@ fun FuelProfileScreen(
     val nonOptCost = nonOptLiters * vehicleProfile.fuelPricePerL
     val savedCostRp = nonOptCost - totalCostRp
 
-    val currencyFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+    val currencyFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("id-ID"))
 
     Column(
         modifier = modifier
@@ -76,13 +75,13 @@ fun FuelProfileScreen(
         ) {
             Column {
                 Text(
-                    text = "BBM & Profil",
+                    text = "BBM & Kendaraan",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
+                    fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "Perhitungan Efisiensi Shift",
+                    text = "Efisiensi & Biaya Operasional",
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -118,7 +117,7 @@ fun FuelProfileScreen(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(48.dp)
+                        .size(44.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.primaryContainer),
                     contentAlignment = Alignment.Center
@@ -127,17 +126,17 @@ fun FuelProfileScreen(
                         imageVector = Icons.Default.TwoWheeler,
                         contentDescription = "Kendaraan",
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 }
 
-                Spacer(modifier = Modifier.width(14.dp))
+                Spacer(modifier = Modifier.width(12.dp))
 
                 Column {
                     Text(
                         text = vehicleProfile.vehicleName,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
+                        fontSize = 15.sp,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
@@ -151,7 +150,7 @@ fun FuelProfileScreen(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // Fuel Cost Analysis
+        // Fuel Cost Analysis Card
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -168,7 +167,7 @@ fun FuelProfileScreen(
                 Text(
                     text = "Konsumsi BBM Hari Ini",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
+                    fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurface
                 )
 
@@ -180,20 +179,20 @@ fun FuelProfileScreen(
                 ) {
                     Column {
                         Text(text = "Jarak", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(text = "$totalKmToday km", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        Text(text = "$totalKmToday km", fontWeight = FontWeight.Bold, fontSize = 15.sp)
                     }
 
                     Column {
                         Text(text = "Konsumsi", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Text(text = "%.2f L".format(litersUsed), fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        Text(text = "%.2f L".format(litersUsed), fontWeight = FontWeight.Bold, fontSize = 15.sp)
                     }
 
                     Column {
-                        Text(text = "Biaya Total", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(text = "Biaya", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         Text(
                             text = currencyFormat.format(totalCostRp).replace(",00", ""),
                             fontWeight = FontWeight.Bold,
-                            fontSize = 16.sp,
+                            fontSize = 15.sp,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
@@ -202,7 +201,7 @@ fun FuelProfileScreen(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Surface(
-                    color = Color(0xFF10B981).copy(alpha = 0.12f),
+                    color = Color(0xFFECFDF5),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {

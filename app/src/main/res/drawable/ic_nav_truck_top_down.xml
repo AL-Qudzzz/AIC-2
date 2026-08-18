@@ -1,0 +1,55 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Outer Glow / Halo -->
+    <path
+        android:fillColor="#33F59E0B"
+        android:pathData="M24,24m-22,0a22,22 0,1 1,44 0a22,22 0,1 1,-44 0" />
+
+    <!-- Base Background Circle -->
+    <path
+        android:fillColor="#0F172A"
+        android:strokeColor="#F59E0B"
+        android:strokeWidth="1.5"
+        android:pathData="M24,24m-16,0a16,16 0,1 1,32 0a16,16 0,1 1,-32 0" />
+
+    <!-- Truck Cabin (Front) -->
+    <path
+        android:fillColor="#D97706"
+        android:strokeColor="#FBBF24"
+        android:strokeWidth="0.8"
+        android:pathData="M17,14 C17,12 31,12 31,14 L31,21 L17,21 Z" />
+
+    <!-- Windshield -->
+    <path
+        android:fillColor="#0284C7"
+        android:pathData="M18,14.5 L30,14.5 L29,18 L19,18 Z" />
+
+    <!-- Cargo Box (Rear) -->
+    <path
+        android:fillColor="#475569"
+        android:strokeColor="#94A3B8"
+        android:strokeWidth="0.8"
+        android:pathData="M16,22h16v13h-16z" />
+    
+    <path
+        android:fillColor="#64748B"
+        android:pathData="M18,24h12v9h-12z" />
+
+    <!-- Headlights -->
+    <path
+        android:fillColor="#FEF08A"
+        android:pathData="M17.5,12.5h3v1.5h-3z M27.5,12.5h3v1.5h-3z" />
+
+    <!-- Tail Lights -->
+    <path
+        android:fillColor="#EF4444"
+        android:pathData="M16.5,34h3v1.5h-3z M28.5,34h3v1.5h-3z" />
+
+    <!-- Directional Pointer Triangle at Front -->
+    <path
+        android:fillColor="#FBBF24"
+        android:pathData="M24,4 L28,10 L20,10 Z" />
+</vector>
