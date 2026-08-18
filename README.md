@@ -247,3 +247,6 @@ Aplikasi memerlukan beberapa izin akses pada `AndroidManifest.xml` untuk fungsio
 Proyek ini dikembangkan dalam rangka inovasi bidang *Smart Logistics* untuk menekan biaya distribusi nasional dan meningkatkan efisiensi kerja kurir di lapangan.
 
 Seluruh kode sumber dilindungi di bawah lisensi terbuka proyek. Untuk informasi lisensi dan kerja sama lebih lanjut, silakan hubungi tim pengembang melalui repositori ini.
+
+## License
+This project is licensed under the [MIT License](LICENSE).
