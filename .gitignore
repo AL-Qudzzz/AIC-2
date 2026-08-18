@@ -1,18 +1,133 @@
+# ==========================================
+# Android & Gradle Build Files
+# ==========================================
 *.iml
-.gradle
-.kotlin
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
+.gradle/
+.kotlin/
+build/
+/build/
+app/build/
+*/build/
+captures/
+.externalNativeBuild/
+.cxx/
 /captures
-.externalNativeBuild
-.cxx
+
+# Built binaries & packages
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+
+# ==========================================
+# Android Studio & IntelliJ IDEA
+# ==========================================
+.idea/
+/.idea/
+*.ipr
+*.iws
+out/
+
+# Dynamic & sensitive IDE files
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/deploymentTargetDropDown.xml
+.idea/deploymentTargetSelector.xml
+.idea/deviceManager.xml
+.idea/discord.xml
+.idea/shelf/
+.idea/tasks.xml
+.idea/firebender/
+.idea/*.db
+.idea/*.db-shm
+.idea/*.db-wal
+
+# ==========================================
+# VS Code & Other Editors
+# ==========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.fleet/
+
+# ==========================================
+# AI Assistant & Local Tooling
+# ==========================================
+.agent/
+.agents/
+.gemini/
+.cursor/
+.claude/
+.codex/
+.impeccable/config.local.json
+
+# ==========================================
+# Secrets, Keys, Keystores & Credentials
+# ==========================================
 local.properties
-.env
+/local.properties
+secrets.properties
+api-keys.properties
+key.properties
+google-services.json
+
+# Keystores & signing keys
+*.keystore
+*.jks
+*.key
+*.pem
+*.p12
+*.pkcs12
+*.pfx
 debug.keystore
+release.keystore
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# Test Reports, Logs & Profiling
+# ==========================================
+reports/
+test-results/
+coverage/
+profileInfo/
+crash-reports/
+*.hprof
+*.prof
+*.log
+hs_err_pid*
+replay_pid*
+
+# ==========================================
+# OS & System Files
+# ==========================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Temporary & backup files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
