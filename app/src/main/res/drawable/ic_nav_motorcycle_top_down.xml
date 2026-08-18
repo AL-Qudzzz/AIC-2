@@ -1,0 +1,61 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Outer Glow / Halo -->
+    <path
+        android:fillColor="#3300E5FF"
+        android:pathData="M24,24m-22,0a22,22 0,1 1,44 0a22,22 0,1 1,-44 0" />
+    
+    <!-- Base Background Circle with contrast border -->
+    <path
+        android:fillColor="#0F172A"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1.5"
+        android:pathData="M24,24m-16,0a16,16 0,1 1,32 0a16,16 0,1 1,-32 0" />
+
+    <!-- Top-Down Motorcycle Body (Pointing UP/North) -->
+    <!-- Front Wheel / Mudguard -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M22,10h4v6h-4z" />
+    
+    <!-- Handlebars -->
+    <path
+        android:fillColor="#00E5FF"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0.5"
+        android:pathData="M16,17h16v3h-16z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M15,16.5h2v4h-2z M31,16.5h2v4h-2z" />
+
+    <!-- Fuel Tank & Chassis -->
+    <path
+        android:fillColor="#38BDF8"
+        android:pathData="M21,20h6v8h-6z" />
+
+    <!-- Driver Seat / Rider Helmet (Top-Down) -->
+    <path
+        android:fillColor="#F8FAFC"
+        android:strokeColor="#0284C7"
+        android:strokeWidth="0.8"
+        android:pathData="M24,25m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0" />
+    <path
+        android:fillColor="#0284C7"
+        android:pathData="M22,23h4v2h-4z" />
+
+    <!-- Rear Seat & Rear Wheel -->
+    <path
+        android:fillColor="#64748B"
+        android:pathData="M22,30h4v5h-4z" />
+    <path
+        android:fillColor="#EF4444"
+        android:pathData="M22.5,35h3v2h-3z" />
+
+    <!-- Directional Pointer Triangle at Front -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M24,4 L28,10 L20,10 Z" />
+</vector>

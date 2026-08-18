@@ -91,9 +91,12 @@ class MainActivity : ComponentActivity() {
 
                 // Synchronize DB packages with SharedRouteViewModel
                 androidx.compose.runtime.LaunchedEffect(packages) {
-                    if (packages.isNotEmpty()) {
-                        sharedRouteViewModel.syncFromDatabasePackages(packages)
-                    }
+                    sharedRouteViewModel.syncFromDatabasePackages(packages)
+                }
+
+                // Synchronize active vehicle profile with SharedRouteViewModel
+                androidx.compose.runtime.LaunchedEffect(vehicleProfile) {
+                    sharedRouteViewModel.setVehicleType(vehicleProfile.typeEnum)
                 }
 
                 var currentTab by remember { mutableStateOf(NavTab.RUTE) }
@@ -105,7 +108,7 @@ class MainActivity : ComponentActivity() {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Box(
                                         modifier = Modifier
-                                            .size(36.dp)
+                                            .size(34.dp)
                                             .clip(CircleShape)
                                             .background(MaterialTheme.colorScheme.primary),
                                         contentAlignment = Alignment.Center
@@ -114,7 +117,7 @@ class MainActivity : ComponentActivity() {
                                             imageVector = Icons.Default.Navigation,
                                             contentDescription = "Logo",
                                             tint = Color.White,
-                                            modifier = Modifier.size(20.dp)
+                                            modifier = Modifier.size(18.dp)
                                         )
                                     }
                                     Spacer(modifier = Modifier.width(10.dp))
@@ -122,14 +125,23 @@ class MainActivity : ComponentActivity() {
                                         Text(
                                             text = "RouteWise AI",
                                             fontWeight = FontWeight.Bold,
-                                            fontSize = 17.sp,
+                                            fontSize = 16.sp,
                                             color = MaterialTheme.colorScheme.onSurface
                                         )
-                                        Text(
-                                            text = "Shift Aktif • Kec. Sawah Tangsel 🟢",
-                                            fontSize = 11.sp,
-                                            color = Color(0xFF059669)
-                                        )
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(6.dp)
+                                                    .clip(CircleShape)
+                                                    .background(Color(0xFF10B981))
+                                            )
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            Text(
+                                                text = "Shift Aktif • Tangsel",
+                                                fontSize = 11.sp,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
                                     }
                                 }
                             },
@@ -153,7 +165,8 @@ class MainActivity : ComponentActivity() {
                     bottomBar = {
                         Surface(
                             color = MaterialTheme.colorScheme.surface,
-                            shadowElevation = 4.dp
+                            shadowElevation = 4.dp,
+                            border = androidx.compose.foundation.BorderStroke(0.5.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
                         ) {
                             NavigationBar(
                                 containerColor = MaterialTheme.colorScheme.surface,
@@ -167,7 +180,8 @@ class MainActivity : ComponentActivity() {
                                         icon = {
                                             Icon(
                                                 imageVector = tab.icon,
-                                                contentDescription = tab.title
+                                                contentDescription = tab.title,
+                                                modifier = Modifier.size(22.dp)
                                             )
                                         },
                                         label = {

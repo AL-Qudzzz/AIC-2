@@ -34,23 +34,28 @@ class OsrmRoutingService {
         .build()
 
     /**
-     * Search address via Nominatim API.
+     * Search address via Nominatim API targeting Indonesia (countrycodes=id)
+     * and prioritizing the Java Island corridor (viewbox=105.0,-5.5,114.5,-8.8).
      */
     suspend fun searchAddressNominatim(query: String): List<GeocodedLocation> = withContext(Dispatchers.IO) {
         if (query.isBlank()) return@withContext emptyList()
 
+        val trimmedQuery = query.trim()
         val encodedQuery = try {
-            URLEncoder.encode(query, "UTF-8")
+            URLEncoder.encode(trimmedQuery, "UTF-8")
         } catch (e: Exception) {
-            query
+            trimmedQuery
         }
 
-        val url = "https://nominatim.openstreetmap.org/search?q=$encodedQuery&format=json&limit=5"
+        // Bounded to Indonesia (countrycodes=id) with Pulau Jawa bounding box bias (viewbox)
+        val url = "https://nominatim.openstreetmap.org/search?q=$encodedQuery&format=json&countrycodes=id&viewbox=105.0,-5.5,114.5,-8.8&bounded=0&limit=8&addressdetails=1&accept-language=id,en"
 
         try {
             val request = Request.Builder()
                 .url(url)
-                .header("User-Agent", "RouteWise-Android-App/1.0")
+                .header("User-Agent", "RouteWise-AI-App/1.0 (Indonesia Delivery; support@routewise.ai)")
+                .header("Accept", "application/json")
+                .header("Accept-Language", "id, en-US, en;q=0.9")
                 .build()
 
             client.newCall(request).execute().use { response ->
@@ -64,7 +69,7 @@ class OsrmRoutingService {
                     val obj = jsonArray.getJSONObject(i)
                     val lat = obj.optDouble("lat", 0.0)
                     val lon = obj.optDouble("lon", 0.0)
-                    val displayName = obj.optString("display_name", query)
+                    val displayName = obj.optString("display_name", trimmedQuery)
 
                     if (lat != 0.0 && lon != 0.0) {
                         results.add(GeocodedLocation(displayName, GeoPoint(lat, lon)))

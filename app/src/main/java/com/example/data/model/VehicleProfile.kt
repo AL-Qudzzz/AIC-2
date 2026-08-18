@@ -6,4 +6,7 @@ data class VehicleProfile(
     val fuelEfficiencyKmPerL: Double = 40.0,
     val fuelType: String = "Pertalite", // "Pertalite", "Pertamax", "Solar"
     val fuelPricePerL: Double = 10000.0
-)
+) {
+    val typeEnum: VehicleType
+        get() = VehicleType.fromProfileString(vehicleType)
+}

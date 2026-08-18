@@ -117,6 +117,7 @@ dependencies {
   implementation(libs.moshi.kotlin)
   implementation(libs.okhttp)
   implementation(libs.osmdroid.android)
+  implementation(libs.android.maps.utils)
   implementation(libs.play.services.location)
   implementation(libs.retrofit)
   implementation(libs.onnxruntime.android)

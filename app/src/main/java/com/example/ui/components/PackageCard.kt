@@ -2,10 +2,8 @@ package com.example.ui.components
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,11 +20,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Inventory2
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Navigation
 import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -35,7 +32,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,12 +48,18 @@ import androidx.compose.ui.unit.sp
 import com.example.data.model.DeliveryPackage
 import com.example.ui.theme.AlertWarningBg
 import com.example.ui.theme.AlertWarningBorder
+import com.example.ui.theme.AlertWarningText
 import com.example.ui.theme.HighRiskBg
+import com.example.ui.theme.HighRiskBorder
 import com.example.ui.theme.HighRiskText
 import com.example.ui.theme.StatusBelum
+import com.example.ui.theme.StatusBelumBg
 import com.example.ui.theme.StatusDalamPerjalanan
+import com.example.ui.theme.StatusDalamPerjalananBg
 import com.example.ui.theme.StatusGagal
+import com.example.ui.theme.StatusGagalBg
 import com.example.ui.theme.StatusTerkirim
+import com.example.ui.theme.StatusTerkirimBg
 
 @Composable
 fun PackageCard(
@@ -68,64 +70,81 @@ fun PackageCard(
     val context = LocalContext.current
 
     val (statusColor, statusBg, statusText) = when (pkg.status) {
-        "TERKIRIM" -> Triple(StatusTerkirim, Color(0xFFD1FAE5), "Terkirim 🟢")
-        "DALAM_PERJALANAN" -> Triple(StatusDalamPerjalanan, Color(0xFFFEF3C7), "Dalam Perjalanan 🟡")
-        "GAGAL_KIRIM" -> Triple(StatusGagal, Color(0xFFFEE2E2), "Gagal Kirim 🔴")
-        else -> Triple(StatusBelum, Color(0xFFF1F5F9), "Belum Dimulai ⚪")
+        "TERKIRIM" -> Triple(StatusTerkirim, StatusTerkirimBg, "Terkirim 🟢")
+        "DALAM_PERJALANAN" -> Triple(StatusDalamPerjalanan, StatusDalamPerjalananBg, "Di Jalan 🟡")
+        "GAGAL_KIRIM" -> Triple(StatusGagal, StatusGagalBg, "Gagal 🔴")
+        else -> Triple(StatusBelum, StatusBelumBg, "Pending ⚪")
     }
 
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp)
+            .padding(vertical = 5.dp)
             .border(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.outline,
-                shape = RoundedCornerShape(24.dp)
+                shape = RoundedCornerShape(18.dp)
             )
             .testTag("package_card_${pkg.id}"),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        shape = RoundedCornerShape(24.dp)
+        shape = RoundedCornerShape(18.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(14.dp)
         ) {
-            // Top Row: Sequence Badge, Priority, Status Pill
+            // Header Row: Sequence Number + Recipient Name + Status Badge
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f)
+                ) {
                     Box(
                         modifier = Modifier
-                            .size(32.dp)
+                            .size(28.dp)
                             .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primaryContainer),
+                            .background(
+                                if (pkg.priority == "EKSPRES") Color(0xFFEF4444) else MaterialTheme.colorScheme.primaryContainer
+                            ),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "#${pkg.sequence}",
+                            text = "${pkg.sequence}",
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            fontSize = 14.sp
+                            color = if (pkg.priority == "EKSPRES") Color.White else MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontSize = 13.sp
                         )
                     }
+
                     Spacer(modifier = Modifier.width(8.dp))
+
+                    Text(
+                        text = pkg.recipientName,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
                     if (pkg.priority == "EKSPRES") {
+                        Spacer(modifier = Modifier.width(6.dp))
                         Surface(
-                            color = Color(0xFFDC2626),
+                            color = Color(0xFFEF4444).copy(alpha = 0.15f),
                             shape = RoundedCornerShape(6.dp)
                         ) {
                             Text(
-                                text = "EKSPRES ⚡",
-                                color = Color.White,
+                                text = "⚡ Ekspres",
+                                color = Color(0xFFDC2626),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 10.sp,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp)
                             )
                         }
                     }
@@ -133,71 +152,79 @@ fun PackageCard(
 
                 Surface(
                     color = statusBg,
-                    shape = RoundedCornerShape(12.dp)
+                    shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(
                         text = statusText,
                         color = statusColor,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                        fontSize = 11.sp,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-            // Recipient & Address Info
-            Text(
-                text = pkg.recipientName,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-
+            // Address Row
             Row(
-                modifier = Modifier.padding(top = 4.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(
                     imageVector = Icons.Default.LocationOn,
                     contentDescription = "Alamat",
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(15.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "${pkg.address}, ${pkg.subDistrict}",
-                    fontSize = 13.sp,
+                    fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
                 )
             }
 
+            // Time Slot & Type Row
             Row(
-                modifier = Modifier.padding(top = 4.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Schedule,
-                    contentDescription = "Jam",
-                    tint = Color.Gray,
-                    modifier = Modifier.size(14.dp)
+                    contentDescription = "Waktu",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(13.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = "Slot Waktu: ${pkg.timeSlot} • ${pkg.packageType}",
-                    fontSize = 12.sp,
-                    color = Color.Gray
+                    text = pkg.timeSlot,
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Icon(
+                    imageVector = Icons.Default.Inventory2,
+                    contentDescription = "Tipe",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(13.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = pkg.packageType,
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
-            // High Risk Warning Box if applicable
+            // High Risk AI Warning Alert
             if (pkg.failureRiskLevel == "HIGH" || pkg.failureRiskLevel == "MEDIUM") {
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -205,60 +232,61 @@ fun PackageCard(
                         .background(if (pkg.failureRiskLevel == "HIGH") HighRiskBg else AlertWarningBg)
                         .border(
                             1.dp,
-                            if (pkg.failureRiskLevel == "HIGH") Color(0xFFFCA5A5) else AlertWarningBorder,
+                            if (pkg.failureRiskLevel == "HIGH") HighRiskBorder else AlertWarningBorder,
                             RoundedCornerShape(10.dp)
                         )
-                        .padding(10.dp)
+                        .padding(horizontal = 10.dp, vertical = 8.dp)
                 ) {
-                    Column {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                imageVector = Icons.Default.Warning,
-                                contentDescription = "Peringatan Risiko",
-                                tint = if (pkg.failureRiskLevel == "HIGH") HighRiskText else Color(0xFFD97706),
-                                modifier = Modifier.size(18.dp)
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
+                    Row(verticalAlignment = Alignment.Top) {
+                        Icon(
+                            imageVector = Icons.Default.Shield,
+                            contentDescription = "Risiko",
+                            tint = if (pkg.failureRiskLevel == "HIGH") HighRiskText else AlertWarningText,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = "Prediksi AI Risk: ${pkg.failureRiskReason ?: "Risiko Gagal Kirim"}",
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 12.sp,
-                                color = if (pkg.failureRiskLevel == "HIGH") HighRiskText else Color(0xFFB45309)
-                            )
-                        }
-                        if (!pkg.recommendedAction.isNullOrEmpty()) {
-                            Text(
-                                text = "💡 Saran AI: ${pkg.recommendedAction}",
+                                text = pkg.failureRiskReason ?: "Potensi Gagal Kirim",
+                                fontWeight = FontWeight.Bold,
                                 fontSize = 11.sp,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.padding(top = 4.dp)
+                                color = if (pkg.failureRiskLevel == "HIGH") HighRiskText else AlertWarningText
                             )
+                            if (!pkg.recommendedAction.isNullOrEmpty()) {
+                                Text(
+                                    text = pkg.recommendedAction,
+                                    fontSize = 11.sp,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.padding(top = 2.dp)
+                                )
+                            }
                         }
                     }
                 }
             }
 
-            // Proof notes if completed or failed
+            // Proof notes snippet if any
             if (!pkg.deliveryProofNotes.isNullOrEmpty() || !pkg.failureReason.isNullOrEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "Catatan Status: ${pkg.deliveryProofNotes ?: pkg.failureReason}",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.primary
+                    text = "Catatan: ${pkg.deliveryProofNotes ?: pkg.failureReason}",
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-            // Action Buttons Bar
+            // Action Row: Quick Contact (Call / WA) + Update Status
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Quick Call & WhatsApp
-                Row {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // Call Button
                     IconButton(
                         onClick = {
                             val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${pkg.phone}"))
@@ -266,10 +294,8 @@ fun PackageCard(
                         },
                         modifier = Modifier
                             .size(36.dp)
-                            .background(
-                                MaterialTheme.colorScheme.surfaceVariant,
-                                CircleShape
-                            )
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
                             .testTag("call_button_${pkg.id}")
                     ) {
                         Icon(
@@ -280,11 +306,10 @@ fun PackageCard(
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(8.dp))
-
+                    // WhatsApp Button
                     IconButton(
                         onClick = {
-                            val waText = "Halo Bpk/Ibu ${pkg.recipientName}, saya kurir RouteWise mengonfirmasi pengiriman paket #${pkg.id} ke ${pkg.address}. Apakah Bpk/Ibu ada di lokasi?"
+                            val waText = "Halo Bpk/Ibu ${pkg.recipientName}, kurir RouteWise mengonfirmasi pengiriman paket #${pkg.sequence} ke ${pkg.address}."
                             val intent = Intent(Intent.ACTION_VIEW).apply {
                                 data = Uri.parse("https://api.whatsapp.com/send?phone=${pkg.phone.replace("^0".toRegex(), "62")}&text=${Uri.encode(waText)}")
                             }
@@ -294,7 +319,8 @@ fun PackageCard(
                         },
                         modifier = Modifier
                             .size(36.dp)
-                            .background(Color(0xFF25D366).copy(alpha = 0.15f), CircleShape)
+                            .clip(CircleShape)
+                            .background(Color(0xFF25D366).copy(alpha = 0.15f))
                             .testTag("whatsapp_button_${pkg.id}")
                     ) {
                         Icon(
@@ -311,10 +337,13 @@ fun PackageCard(
                     onClick = onStatusUpdateClick,
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    modifier = Modifier.testTag("update_status_btn_${pkg.id}")
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp, vertical = 6.dp),
+                    modifier = Modifier
+                        .height(36.dp)
+                        .testTag("update_status_btn_${pkg.id}")
                 ) {
                     Text(
-                        text = "Update Status",
+                        text = "Update",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold
                     )
